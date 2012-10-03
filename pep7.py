@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+import pep8
+import re
+
 ### C Dialect
 
 # Use ANSI/ISO standard C (the 1989 version of the standard). This means
@@ -10,7 +14,24 @@
 # All function declarations and definitions must use full prototypes (i.e.
 # specify the types of all arguments).
 
+
 # Never use C++ style // one-line comments.
+def slashslash_full_line_comments(physical_line):
+    """
+        Never use C++ style // one-line comments.
+
+        E601: // some comment
+    """
+    full_line_slashslash = re.compile(r'^\s *//')
+    inline_slashslash = re.compile(r'^\s*[^*]*//')
+
+    if full_line_slashslash.search(physical_line) or \
+       inline_slashslash.search(physical_line):
+        idx = physical_line.index("//")
+        return idx, "E601 Never use C++ style // one-line comments"
+
+pep8.slashslash_full_line_comments = slashslash_full_line_comments
+
 
 # No compiler warnings with major compilers (gcc, VC++, a few others).
 
@@ -98,3 +119,6 @@
 
 # When writing multi-line docstrings, be sure to always use backslash
 # continuations, as in the example above, or string literal concatenation.
+
+# Finally launching pep8
+pep8._main()
