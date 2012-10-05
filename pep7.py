@@ -56,7 +56,24 @@ pep8.slashslash_full_line_comments = slashslash_full_line_comments
 #       ...
 #       }
 
-# The return statement should not get redundant parentheses
+
+def return_statement_redundant_paren(logical_line):
+    """
+        The return statement should not get redundant parentheses
+
+        Okay: return value;
+        E722: return(value);
+    """
+    error = "E722 The return statement should not get redundant parentheses"
+
+    return_paren = re.compile(r'^return\s*(\(.*|.*\);)')
+
+    if return_paren.search(logical_line):
+        idx = logical_line.index("(") or logical_line.index(")")
+        yield idx, error
+
+pep8.return_statement_redundant_paren = return_statement_redundant_paren
+
 
 # Function and macro call style: foo(a, b, c) -- no space before the open
 # paren, no spaces inside the parens, no spaces before commas, one space after
