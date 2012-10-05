@@ -38,11 +38,10 @@ pep8.slashslash_full_line_comments = slashslash_full_line_comments
 
 ### Code lay-out
 
-# Use 4-space indents and no tabs at all.
-
-# No line should be longer than 79 characters.
-
-# No line should end in whitespace.
+# The following are provided by pep8
+# - Use 4-space indents and no tabs at all.
+# - No line should be longer than 79 characters.
+# - No line should end in whitespace.
 
 # Function definition style: function name in column 1, outermost curly braces
 # in column 1, blank line after local variable declarations.
