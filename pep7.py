@@ -46,15 +46,17 @@ pep8.slashslash_full_line_comments = slashslash_full_line_comments
 global next_line_is_bracket
 global bracket_level
 global open_function
+global open_local_variables
 next_line_is_bracket = False
 bracket_level = 0
 open_function = False
+open_local_variables = False
 
 
 def function_def_style(physical_line):
     """
         Function definition style: function name in column 1, outermost curly
-        braces in column 1, blank line after local variable declarations.
+        braces in column 1.
 
         Okay: int something()\n{\n ... \n}\n
         E723: int something() {\n ... \n}\n
@@ -117,7 +119,40 @@ def function_def_style(physical_line):
                 return idx, error + " ('}' not in col 1)"
 
 
+def blank_line_local_vars(physical_line):
+    """
+        Blank line after local variable declarations.
+
+        Okay: int something()\n{\n ... \n}\n
+        E723: int something() {\n ... \n}\n
+        E723: int something(){\n ... \n}\n
+        E723: int something()\n{\n ... code;}\n
+        E723: int something()\n\n{\n ... code;}\n
+    """
+    global open_local_variables
+    global blank_line_after_local_var
+
+    var_declaration_regex = re.compile("[a-zA-Z_-] [&*a-zA-Z_-]+ (= .*)+;$")
+    blank_line_regex = re.compile("^\s*$")
+
+    if var_declaration_regex.search(physical_line):
+        open_local_variables = True
+
+    else:
+        # This isn't a variable declaration line
+        if blank_line_regex.search(physical_line):
+            open_local_variables = False
+
+        elif open_local_variables:
+            # This is not a blank line nor a variable declaration
+            open_local_variables = False
+
+            print physical_line.rstrip()
+            return 0, "E723 No blank line after local variable declarations"
+
+
 pep8.function_def_style = function_def_style
+pep8.blank_line_local_vars = blank_line_local_vars
 
 # Code structure:
 # - one space between keywords like if, for and the following left paren;
