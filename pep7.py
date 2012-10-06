@@ -62,7 +62,8 @@ def function_def_style(physical_line):
     global next_line_is_bracket
     global open_function
     global bracket_level
-    error = "E234 Check function def style"
+
+    error = "E723 Check function def style"
 
     function_regex = re.compile("\w+\s+.*\(.*\)\s*({?)$")
 
