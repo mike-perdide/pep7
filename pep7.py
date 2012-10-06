@@ -71,7 +71,7 @@ def function_def_style(physical_line):
         # This is a function definition line
         open_function = True
 
-        if function_regex.match(physical_line).group(1):
+        if '{' in physical_line:
             # The opening bracket is on the same line as the function
             # declaration.
             idx = physical_line.index("{")
