@@ -169,7 +169,7 @@ def return_statement_redundant_paren(logical_line):
     """
     error = "E722 The return statement should not get redundant parentheses"
 
-    return_paren = re.compile(r'^return\s*(\(.*|.*\);)')
+    return_paren = re.compile(r'return\s*(\(.*|.*\);)')
 
     if return_paren.search(logical_line):
         idx = logical_line.index("(") or logical_line.index(")")
