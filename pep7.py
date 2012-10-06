@@ -43,8 +43,81 @@ pep8.slashslash_full_line_comments = slashslash_full_line_comments
 # - No line should be longer than 79 characters.
 # - No line should end in whitespace.
 
-# Function definition style: function name in column 1, outermost curly braces
-# in column 1, blank line after local variable declarations.
+global next_line_is_bracket
+global bracket_level
+global open_function
+next_line_is_bracket = False
+bracket_level = 0
+open_function = False
+
+
+def function_def_style(physical_line):
+    """
+        Function definition style: function name in column 1, outermost curly
+        braces in column 1, blank line after local variable declarations.
+
+        Okay: int something()\n{\n ... \n}\n
+        E723: int something() {\n ... \n}\n
+        E723: int something(){\n ... \n}\n
+        E723: int something()\n{\n ... code;}\n
+        E723: int something()\n\n{\n ... code;}\n
+    """
+    global next_line_is_bracket
+    global open_function
+    global bracket_level
+    error = "E234 Check function def style"
+
+    function_regex = re.compile("\w+\s+.*\(.*\)\s*({?)$")
+
+    if function_regex.search(physical_line):
+        # This is a function definition line
+        open_function = True
+
+        if function_regex.match(physical_line).group(1):
+            # The opening bracket is on the same line as the function
+            # declaration.
+            idx = physical_line.index("{")
+            bracket_level += 1
+
+            return idx, error + " ('{' on function declaration line)"
+        else:
+            next_line_is_bracket = True
+
+    elif next_line_is_bracket:
+        # This has been set in a previous execution, it means this line
+        # includes an opening bracket.
+        if "{" not in physical_line:
+            # This means the opening bracket doesn't follow the function
+            # declaration line.
+
+            return 0, error + " (blank line before '{')"
+
+        next_line_is_bracket = False
+        bracket_level += 1
+
+        idx = physical_line.index("{")
+        if idx != 0:
+
+            return idx, error + " ('{' not in col 1)"
+
+    elif open_function:
+        # This is neither a function declaration line nor an "opening bracket"
+        # line. We will count the number brackets and detect the closing
+        # bracket for the current function.
+        bracket_level += physical_line.count("{")
+        bracket_level -= physical_line.count("}")
+
+        if bracket_level == 0:
+            # This means this line contains the closing bracket for the current
+            # function.
+            open_function = False
+
+            idx = physical_line.index("}")
+            if idx != 0:
+                return idx, error + " ('}' not in col 1)"
+
+
+pep8.function_def_style = function_def_style
 
 # Code structure:
 # - one space between keywords like if, for and the following left paren;
