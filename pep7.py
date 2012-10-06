@@ -87,7 +87,6 @@ def function_def_style(physical_line):
         if "{" not in physical_line:
             # This means the opening bracket doesn't follow the function
             # declaration line.
-
             return 0, error + " (blank line before '{')"
 
         next_line_is_bracket = False
@@ -95,7 +94,6 @@ def function_def_style(physical_line):
 
         idx = physical_line.index("{")
         if idx != 0:
-
             return idx, error + " ('{' not in col 1)"
 
     elif open_function:
