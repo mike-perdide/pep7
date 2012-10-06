@@ -128,6 +128,8 @@ def blank_line_local_vars(physical_line):
     global open_local_variables
     global blank_line_after_local_var
 
+    error = "E723 Missing blank line after local variable declarations"
+
     var_declaration_regex = re.compile("[a-zA-Z_-] [&*a-zA-Z_-]+ (= .*)+;$")
     blank_line_regex = re.compile("^\s*$")
 
@@ -143,8 +145,7 @@ def blank_line_local_vars(physical_line):
             # This is not a blank line nor a variable declaration
             open_local_variables = False
 
-            print physical_line.rstrip()
-            return 0, "E723 No blank line after local variable declarations"
+            return 0, error
 
 
 pep8.function_def_style = function_def_style
