@@ -26,7 +26,9 @@ def extract_expected(filename):
             elif " * TESTS RESULTS:" in line:
                 recording = True
 
-filelist = ('tests/functiondefstyle.c',)
+filelist = ('tests/functiondefstyle.c',
+            'tests/slashslash.c',
+            'tests/returnparen.c')
 
 for filename in filelist:
     errors = [error for error in run_pep7(filename)]
