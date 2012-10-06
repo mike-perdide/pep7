@@ -42,11 +42,6 @@ pep8.slashslash_full_line_comments = slashslash_full_line_comments
 # - Use 4-space indents and no tabs at all.
 # - No line should be longer than 79 characters.
 # - No line should end in whitespace.
-
-global next_line_is_bracket
-global bracket_level
-global open_function
-global open_local_variables
 next_line_is_bracket = False
 bracket_level = 0
 open_function = False
