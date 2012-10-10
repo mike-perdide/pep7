@@ -239,5 +239,72 @@ pep8.return_statement_redundant_paren = return_statement_redundant_paren
 # When writing multi-line docstrings, be sure to always use backslash
 # continuations, as in the example above, or string literal concatenation.
 
+
+### Heavy hacking begins
+
+# Adding a filtering method between tokenize and pep8.
+in_multiline_comment = False
+
+
+def filter_generate_tokens(self):
+    """
+    This acts by :
+        - filtering out /* ... */ comments
+        - fixing the type of tokens for emptied logical lines
+        - fixing the type of tokens for end of C lines (";\n")
+    """
+    global in_multiline_comment
+
+    previous_token = None
+    skip_slash = False
+
+    tokens_on_this_line = 0
+
+    for token in legit_generate_tokens(self):
+        if skip_slash:
+            # This is the "/" corresponding to the second character in "*/".
+            # Therefore, it should be skipped.
+            assert previous_token[1] == "/"
+            skip_slash = False
+            previous_token = token
+            continue
+
+        if previous_token:
+            if previous_token[1] == '/' and token[1] == '*':
+                in_multiline_comment = True
+
+            elif in_multiline_comment and \
+                    previous_token[1] == '*' and token[1] == '/':
+
+                in_multiline_comment = False
+                skip_slash = True
+
+            elif not in_multiline_comment:
+                if previous_token[1] == ";" and token[1] == "\n":
+                    # This is the end of a logical line, not detected by
+                    # tokenize
+                    token = (4,) + token[1:]
+
+                elif previous_token[0] == 4 and tokens_on_this_line == 0:
+                    # If we don't have any token on this line (because they've
+                    # been filtered out), don't yield a logical line end token.
+                    previous_token = (54,) + previous_token[1:]
+
+                if previous_token[0] == 54 or previous_token[0] == 4:
+                    tokens_on_this_line = 0
+                else:
+                    tokens_on_this_line += 1
+
+                yield previous_token
+
+        previous_token = token
+
+    yield previous_token
+
+
+legit_generate_tokens = pep8.Checker.generate_tokens
+pep8.Checker.generate_tokens = filter_generate_tokens
+
+
 # Finally launching pep8
 pep8._main()
