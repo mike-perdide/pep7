@@ -6,7 +6,7 @@ pep7_output_regex = re.compile("^.*?:(.*)$")
 
 
 def run_pep7(filename):
-    handle = Popen(["./pep7.py", filename], stdout=PIPE)
+    handle = Popen(["./pep7.py", filename], stdout=PIPE, stderr=PIPE)
     stdout = handle.communicate()[0]
 
     for line in stdout.rstrip().split("\n"):
