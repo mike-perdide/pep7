@@ -32,11 +32,19 @@ filelist = ('tests/functiondefstyle.c',
             'tests/returnparen.c')
 
 for filename in filelist:
-    errors = [error for error in run_pep7(filename)]
-    expected_results = [expected for expected in extract_expected(filename)]
+    errors = set([error for error in run_pep7(filename)])
+    expected_results = set([expected
+                            for expected in extract_expected(filename)])
 
     print "=====", filename, ": ",
     print len(expected_results), "tests", "====="
-    for expected in expected_results:
-        assert expected in errors, \
-               "The following error is missing: %s" % expected
+
+    if errors - expected_results:
+        print "* unexpected errors:", len(errors - expected_results)
+        for error in errors - expected_results:
+            print error.strip()
+
+    if expected_results - errors:
+        print "* missing errors:", len(expected_results - errors)
+        for expected in expected_results:
+            print expected.strip()
