@@ -10,8 +10,9 @@ def run_pep7(filename):
     stdout = handle.communicate()[0]
 
     for line in stdout.rstrip().split("\n"):
-        match = pep7_output_regex.match(line)
-        yield match.group(1)
+        if line.strip():
+            match = pep7_output_regex.match(line)
+            yield match.group(1)
 
 
 def extract_expected(filename):
