@@ -29,7 +29,8 @@ def extract_expected(filename):
 
 filelist = ('tests/functiondefstyle.c',
             'tests/slashslash.c',
-            'tests/returnparen.c')
+            'tests/returnparen.c',
+            'tests/falsepositivewhitespaceop.c')
 
 for filename in filelist:
     errors = set([error for error in run_pep7(filename)])
