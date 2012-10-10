@@ -18,9 +18,9 @@ import re
 # Never use C++ style // one-line comments.
 def slashslash_full_line_comments(physical_line):
     """
-        Never use C++ style // one-line comments.
+    Never use C++ style // one-line comments.
 
-        E601: // some comment
+    E601: // some comment
     """
     full_line_slashslash = re.compile(r'^\s *//')
     inline_slashslash = re.compile(r'^\s*[^*]*//')
@@ -50,14 +50,14 @@ open_local_variables = False
 
 def function_def_style(physical_line):
     """
-        Function definition style: function name in column 1, outermost curly
-        braces in column 1.
+    Function definition style: function name in column 1, outermost curly
+    braces in column 1.
 
-        Okay: int something()\n{\n ... \n}\n
-        E723: int something() {\n ... \n}\n
-        E723: int something(){\n ... \n}\n
-        E723: int something()\n{\n ... code;}\n
-        E723: int something()\n\n{\n ... code;}\n
+    Okay: int something()\n{\n ... \n}\n
+    E723: int something() {\n ... \n}\n
+    E723: int something(){\n ... \n}\n
+    E723: int something()\n{\n ... code;}\n
+    E723: int something()\n\n{\n ... code;}\n
     """
     global next_line_is_bracket
     global open_function
@@ -115,13 +115,13 @@ def function_def_style(physical_line):
 
 def blank_line_local_vars(physical_line):
     """
-        Blank line after local variable declarations.
+    Blank line after local variable declarations.
 
-        Okay: int something()\n{\n ... \n}\n
-        E723: int something() {\n ... \n}\n
-        E723: int something(){\n ... \n}\n
-        E723: int something()\n{\n ... code;}\n
-        E723: int something()\n\n{\n ... code;}\n
+    Okay: int something()\n{\n ... \n}\n
+    E723: int something() {\n ... \n}\n
+    E723: int something(){\n ... \n}\n
+    E723: int something()\n{\n ... code;}\n
+    E723: int something()\n\n{\n ... code;}\n
     """
     global open_local_variables
     global blank_line_after_local_var
@@ -162,10 +162,10 @@ pep8.blank_line_local_vars = blank_line_local_vars
 
 def return_statement_redundant_paren(logical_line):
     """
-        The return statement should not get redundant parentheses
+    The return statement should not get redundant parentheses
 
-        Okay: return value;
-        E722: return(value);
+    Okay: return value;
+    E722: return(value);
     """
     error = "E722 The return statement should not get redundant parentheses"
 
