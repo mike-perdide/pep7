@@ -294,7 +294,11 @@ def filter_generate_tokens(self):
 
                 if previous_token[0] == 54 or previous_token[0] == 4:
                     tokens_on_this_line = 0
-                else:
+
+                elif previous_token[0] != 6:
+                    # The token type "6" means a '' token, which will be
+                    # ignored by pep8 and could lead to problems when trying to
+                    # access a blank line
                     tokens_on_this_line += 1
 
                 yield previous_token
