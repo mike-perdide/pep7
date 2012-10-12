@@ -47,5 +47,5 @@ for filename in filelist:
 
     if expected_results - errors:
         print "* missing errors:", len(expected_results - errors)
-        for expected in expected_results:
+        for expected in expected_results - errors:
             print expected.strip()
