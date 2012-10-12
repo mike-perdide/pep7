@@ -17,6 +17,6 @@ int vain()
 }
 /*
  * TESTS RESULTS:
- * 10:11: E722 The return statement should not get redundant parentheses
- * 15:11: E722 The return statement should not get redundant parentheses
+ * 11:11: E722 The return statement should not get redundant parentheses
+ * 16:12: E722 The return statement should not get redundant parentheses
  */
