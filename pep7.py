@@ -252,8 +252,8 @@ def filter_generate_tokens(self):
 
     This acts by :
         - filtering out /* ... */ comments
-        - fixing the type of tokens for emptied logical lines
-        - fixing the type of tokens for end of C lines (";\n")
+        - changing the type of the end token of and empty logical line
+        - changing the type of tokens for end of C lines (";\n")
     """
     global in_multiline_comment
 
