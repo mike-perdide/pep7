@@ -254,6 +254,20 @@ def filter_generate_tokens(self):
         - filtering out /* ... */ comments
         - changing the type of the end token of and empty logical line
         - changing the type of tokens for end of C lines (";\n")
+        - ignoring '{' and '}' tokens because:
+            * we get ';}' from the tokens ';', '\n', '}'. This makes it
+            complicated to check for spaces after ';' and calls for more
+            monkey-patching.
+            * we get logical lines with multiple statements on one line .This
+            is a problem, even if the E702 errors raised by PEP8 are raised
+            only because of the presence of ';' at the end of the line.
+            * we get extraneous spaces around '{' and '}', which are always
+            reconstitued with spaces in logical lines.
+
+        About the dismissal of brackets:
+            This dismissal is a bit violent, but I believe that all checks
+            regarding the positionning of and spacing around brackets can be
+            checked throught physical lines.
     """
     global in_multiline_comment
 
@@ -272,6 +286,12 @@ def filter_generate_tokens(self):
             continue
 
         if previous_token:
+            if previous_token[1] in '{}':
+                # Brackets don't have an impact on the logical lines therefore
+                # they will be ignored.
+                previous_token = token
+                continue
+
             if previous_token[1] == '/' and token[1] == '*':
                 in_multiline_comment = True
 
