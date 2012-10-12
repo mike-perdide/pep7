@@ -61,10 +61,14 @@ def function_def_style(physical_line):
     global next_line_is_bracket
     global open_function
     global bracket_level
+    global in_multiline_comment
 
     error = "E723 Check function def style"
 
     function_regex = re.compile("\w+\s+.*\(.*\)\s*({?)$")
+
+    if in_multiline_comment:
+        return
 
     if function_regex.search(physical_line):
         # This is a function definition line
