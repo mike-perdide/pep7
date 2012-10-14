@@ -15,7 +15,6 @@ int pain() {
 int vain(){
     int my_var = 5;
 
-
     printf("Hello world\n");
     return 0;
 }
@@ -39,11 +38,10 @@ int nain()
  * 10:12: E723 Check function def style ('{' on function declaration line)
  * 12:1: E723 Missing blank line after local variable declarations
  * 15:11: E723 Check function def style ('{' on function declaration line)
- * 25:14: E723 Check function def style ('}' not in col 1)
- * 27:2: E723 Check function def style ('{' not in col 1)
- * 30:2: E723 Check function def style ('}' not in col 1)
- * 32:1: E723 Check function def style (blank line before '{')
- * 33:2: E723 Check function def style ('{' not in col 1)
- * 36:2: E723 Check function def style ('}' not in col 1)
+ * 24:14: E723 Check function def style ('}' not in col 1)
+ * 26:2: E723 Check function def style ('{' not in col 1)
+ * 29:2: E723 Check function def style ('}' not in col 1)
+ * 31:1: E723 Check function def style (blank line before '{')
+ * 32:2: E723 Check function def style ('{' not in col 1)
+ * 35:2: E723 Check function def style ('}' not in col 1)
  */
-
